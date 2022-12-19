@@ -116,8 +116,42 @@ app.delete('/tasks/:id', async (req, res) => {
 /***********************Labb 2 ***********************/
 /* Här skulle det vara lämpligt att skriva en funktion som likt post eller delete tar kan hantera PUT- eller PATCH-anrop (du får välja vilket, läs på om vad som verkar mest vettigt för det du ska göra) för att kunna markera uppgifter som färdiga. Den nya statusen - completed true eller falase - kan skickas i förfrågans body (req.body) tillsammans med exempelvis id så att man kan söka fram en given uppgift ur listan, uppdatera uppgiftens status och till sist spara ner listan med den uppdaterade uppgiften */
 
+/*
+Del 1
+Skapa checkrutan i det grafiska för varje task som läggs in.
+När checkrutan klickas i ska taskets data uppdateras - byta "completed" till true.
+När klickas ut byt till false.
+När checkrutan är markerad, byt färg eller något på task.
+
+PUT - skickar en modifierad version och byter ut orginal versionen.
+PUSH - skickar ett set av instruktioner för att modifiera resusen.
+
+
+
+
+Del 2
+Sortera på datum, den med kortast tid kvar till datum ska ligga först.
+
+
+*/
+app.patch('/tasks/:id', async (req, res) => {
+  console.log(req);
+}
+)
+
+
+function checktBox(id){
+  if(completed == true){
+    document.getElementById("igKURS").style.backgroundColor = "lightblue";
+    //renderList();
+  }
+}
+
+
 /* Observera att all kod rörande backend för labb 2 ska skrivas i denna fil och inte i app.node.js. App.node.js är bara till för exempel från lektion 5 och innehåller inte någon kod som används vidare under lektionerna. */
 /***********************Labb 2 ***********************/
 
 /* Med app.listen säger man åte servern att starta. Första argumentet är port - dvs. det portnummer man vill att servern ska köra på. Det sattes till 5000 på rad 9. Det andra argumentet är en anonym arrow-funktion som körs när servern har lyckats starta. Här skrivs bara ett meddelande ut som berättar att servern kör, så att man får feedback på att allt körts igång som det skulle. */
 app.listen(PORT, () => console.log('Server running on http://localhost:5000'));
+
+
