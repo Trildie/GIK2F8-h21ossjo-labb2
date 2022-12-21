@@ -138,26 +138,28 @@ app.patch('/tasks/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const task = req.body;
+    const test = req.body.completed;
+    
     //id.completed=true;
     const listBuffer = await fs.readFile('./tasks.json');
     const currentTasks = JSON.parse(listBuffer);
 
     const filteredTasks = currentTasks.filter((task) => task.id == id).pop();
+    const filterd2 = currentTasks.filter((task) => task.id != id);
+    filteredTasks.completed = test;
     //filterar currntTasks som har alla tasks i sig.
     //loopar igenom alla och checkar dens ID, sedan kör vi pop() vilke är att man hämtar ut ett element ur en array.
     //Detta då annars så skulle det retuneras som en array med ett task i. Nu får vi ut specifikt det tasket.
 
-    if(filteredTasks.completed == true){
-      filteredTasks.completed = false;
-    } 
-    else {
-      filteredTasks.completed = true;
-    }
+    const newList = [...filterd2, filteredTasks];
+
+    /* Den nya listan görs om till en textsträng med hjälp av JSON.stringify och sparas ner till filen tasks.json med hjälp av fs-modulens writeFile-metod. Anropet är asynkront så await används för att invänta svaret innan koden går vidare. */
+    await fs.writeFile('./tasks.json', JSON.stringify(newList));
     
     
 
 
-    res.send(filteredTasks);
+    res.send(newList);
 //Sätta completed till true?
   } catch(error){
     res.status(500).send({ error: error.stack });
