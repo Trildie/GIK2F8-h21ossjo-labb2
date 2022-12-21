@@ -135,10 +135,36 @@ Sortera på datum, den med kortast tid kvar till datum ska ligga först.
 
 */
 app.patch('/tasks/:id', async (req, res) => {
-  console.log(req);
-}
-)
+  try {
+    const id = req.params.id;
+    const task = req.body;
+    //id.completed=true;
+    const listBuffer = await fs.readFile('./tasks.json');
+    const currentTasks = JSON.parse(listBuffer);
 
+    const filteredTasks = currentTasks.filter((task) => task.id == id).pop();
+    //filterar currntTasks som har alla tasks i sig.
+    //loopar igenom alla och checkar dens ID, sedan kör vi pop() vilke är att man hämtar ut ett element ur en array.
+    //Detta då annars så skulle det retuneras som en array med ett task i. Nu får vi ut specifikt det tasket.
+
+    if(filteredTasks.completed == true){
+      filteredTasks.completed = false;
+    } 
+    else {
+      filteredTasks.completed = true;
+    }
+    
+    
+
+
+    res.send(filteredTasks);
+//Sätta completed till true?
+  } catch(error){
+    res.status(500).send({ error: error.stack });
+  }
+});
+//hämta rätt task.
+//uppdatera completed till true/false
 
 function checktBox(id){
   if(completed == true){

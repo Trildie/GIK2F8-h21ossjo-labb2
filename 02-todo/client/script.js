@@ -123,6 +123,10 @@ function deleteTask(id) {
 }
 
 
+function checktBox(id) {
+  console.log('test checkbox' + id)
+  
+};
 
 
 renderList();
