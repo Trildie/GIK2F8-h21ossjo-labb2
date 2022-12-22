@@ -73,4 +73,33 @@ class Api {
       .then((result) => result)
       .catch((err) => console.log(err));
   }
+
+
+
+  update(id, completed){
+    console.log(`update i API.js`);
+    const data = {"id":id, "completed":completed};
+    const JSONData = JSON.stringify(data);
+   
+    const request = new Request(`${this.url}/${id}`, {
+      method: 'PATCH',
+      body: JSONData,
+      headers: {
+        'content-type': 'application/json'
+      }
+    });
+    
+    return (
+      fetch(request)        
+        .then((result) => result.json())      
+        .then((data) => data)     
+        .catch((err) => console.log(err))
+    );
+  }
+
+
+
+
+
+
 }

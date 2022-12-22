@@ -69,7 +69,7 @@ app.post('/tasks', async (req, res) => {
     const newTask = { id: maxTaskId + 1, ...task };
     /* Om currentTasks finns - dvs det finns tidigare lagrade uppgifter,  skapas en ny array innehållande tidigare uppgifter (varje befintlig uppgift i currentTasks läggs till i den nya arrayen med hjälp av spreadoperatorn) plus den nya uppgiften. Om det inte tidigare finns några uppgifter, skapas istället en ny array med endast den nya uppgiften.  */
     const newList = currentTasks ? [...currentTasks, newTask] : [newTask];
-
+    sortMyList(newList);
     /* Den nya listan görs om till en textsträng med hjälp av JSON.stringify och sparas ner till filen tasks.json med hjälp av fs-modulens writeFile-metod. Anropet är asynkront så await används för att invänta svaret innan koden går vidare. */
     await fs.writeFile('./tasks.json', JSON.stringify(newList));
     /* Det är vanligt att man vid skapande av någon ny resurs returnerar tillbaka den nya sak som skapades. Så den nya uppgiften skickas med som ett success-response. */
@@ -153,12 +153,15 @@ app.patch('/tasks/:id', async (req, res) => {
 
     const newList = [...filterd2, filteredTasks];
 
+    sortMyList(newList);
+    /* newList.sort(function(a,b){
+      return a.dueDate.localeCompare(b.dueDate);
+    }); */
+
+
     /* Den nya listan görs om till en textsträng med hjälp av JSON.stringify och sparas ner till filen tasks.json med hjälp av fs-modulens writeFile-metod. Anropet är asynkront så await används för att invänta svaret innan koden går vidare. */
     await fs.writeFile('./tasks.json', JSON.stringify(newList));
     
-    
-
-
     res.send(newList);
 //Sätta completed till true?
   } catch(error){
@@ -168,11 +171,10 @@ app.patch('/tasks/:id', async (req, res) => {
 //hämta rätt task.
 //uppdatera completed till true/false
 
-function checktBox(id){
-  if(completed == true){
-    document.getElementById("igKURS").style.backgroundColor = "lightblue";
-    //renderList();
-  }
+function sortMyList(list){
+  list.sort(function(a,b){
+    return a.dueDate.localeCompare(b.dueDate);
+  });
 }
 
 

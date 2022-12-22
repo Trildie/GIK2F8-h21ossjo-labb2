@@ -94,12 +94,18 @@ function renderList() {
   });
 }
 
-function renderTask({ id, title, description, dueDate }) {
+function renderTask({ id, title, description, dueDate, completed }) {
+  let status = "";
+  let colorTitle = "text-pink-800"
+  if (completed){
+    status = "checked"
+    colorTitle = "text-green-800"
+  }
   let html = `
-    <li id="skitKurs" class="select-none mt-2 py-2 border-b border-amber-300">
-      <div id="igKURS" class="flex items-center">
-        <h3 id="h3task" class="mb-3 flex-1 text-xl font-bold text-pink-800 uppercase">${title}</h3>
-        <input type="checkbox" onclick="checktBox(${id})" id="completed" name="completed" value="false"> 
+    <li class="select-none mt-2 py-2 border-b border-amber-300">
+      <div class="flex items-center">
+        <h3 id="h3task" class="mb-3 flex-1 text-xl font-bold ${colorTitle} uppercase">${title}</h3>
+        <input type="checkbox" onclick="checktBox(${id}, ${!completed})" id="checkBoxComp" name="completed" ${status}  > 
         <label for="completed"> Completed </label>        
         <div>          
           <span>${dueDate}</span>
@@ -123,8 +129,12 @@ function deleteTask(id) {
 }
 
 
-function checktBox(id) {
-  console.log('test checkbox' + id)
+function checktBox(id, completed) {
+  console.log('test checkbox' + id + completed)
+
+  api.update(id, completed).then((result) => {
+    renderList();
+  });
   
 };
 
