@@ -96,7 +96,10 @@ class Api {
         .catch((err) => console.log(err))
     );
   }
-
+  //Update
+  //tar imot ett id och status för completed.
+  //sparar in dessa värden i en array kallad "data"
+  //data körs med json stringify för att sedan skicka den till PATCH.
 
 
 

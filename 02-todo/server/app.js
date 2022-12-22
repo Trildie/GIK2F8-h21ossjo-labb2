@@ -116,37 +116,17 @@ app.delete('/tasks/:id', async (req, res) => {
 /***********************Labb 2 ***********************/
 /* Här skulle det vara lämpligt att skriva en funktion som likt post eller delete tar kan hantera PUT- eller PATCH-anrop (du får välja vilket, läs på om vad som verkar mest vettigt för det du ska göra) för att kunna markera uppgifter som färdiga. Den nya statusen - completed true eller falase - kan skickas i förfrågans body (req.body) tillsammans med exempelvis id så att man kan söka fram en given uppgift ur listan, uppdatera uppgiftens status och till sist spara ner listan med den uppdaterade uppgiften */
 
-/*
-Del 1
-Skapa checkrutan i det grafiska för varje task som läggs in.
-När checkrutan klickas i ska taskets data uppdateras - byta "completed" till true.
-När klickas ut byt till false.
-När checkrutan är markerad, byt färg eller något på task.
-
-PUT - skickar en modifierad version och byter ut orginal versionen.
-PUSH - skickar ett set av instruktioner för att modifiera resusen.
-
-
-
-
-Del 2
-Sortera på datum, den med kortast tid kvar till datum ska ligga först.
-
-
-*/
 app.patch('/tasks/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const task = req.body;
-    const test = req.body.completed;
-    
-    //id.completed=true;
+    const status = req.body.completed;
+
     const listBuffer = await fs.readFile('./tasks.json');
     const currentTasks = JSON.parse(listBuffer);
 
     const filteredTasks = currentTasks.filter((task) => task.id == id).pop();
     const filterd2 = currentTasks.filter((task) => task.id != id);
-    filteredTasks.completed = test;
+    filteredTasks.completed = status;
     //filterar currntTasks som har alla tasks i sig.
     //loopar igenom alla och checkar dens ID, sedan kör vi pop() vilke är att man hämtar ut ett element ur en array.
     //Detta då annars så skulle det retuneras som en array med ett task i. Nu får vi ut specifikt det tasket.
@@ -154,22 +134,16 @@ app.patch('/tasks/:id', async (req, res) => {
     const newList = [...filterd2, filteredTasks];
 
     sortMyList(newList);
-    /* newList.sort(function(a,b){
-      return a.dueDate.localeCompare(b.dueDate);
-    }); */
-
-
+    //kallar metoden sortMyList som sorterar efter datum.
     /* Den nya listan görs om till en textsträng med hjälp av JSON.stringify och sparas ner till filen tasks.json med hjälp av fs-modulens writeFile-metod. Anropet är asynkront så await används för att invänta svaret innan koden går vidare. */
     await fs.writeFile('./tasks.json', JSON.stringify(newList));
     
     res.send(newList);
-//Sätta completed till true?
   } catch(error){
     res.status(500).send({ error: error.stack });
   }
 });
-//hämta rätt task.
-//uppdatera completed till true/false
+
 
 function sortMyList(list){
   list.sort(function(a,b){

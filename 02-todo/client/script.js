@@ -96,18 +96,23 @@ function renderList() {
 
 function renderTask({ id, title, description, dueDate, completed }) {
   let status = "";
+  let divColor = "";
   let colorTitle = "text-pink-800"
   if (completed){
     status = "checked"
     colorTitle = "text-green-800"
+    divColor = "bg-emerald-200"
   }
+  //Laggt till att competed tas med i renderTasks.
+  //skapar status, div och title variabler.
+  //Om tasket är completed, ändra checked och färgen, sätter in de variablerna i html.
   let html = `
-    <li class="select-none mt-2 py-2 border-b border-amber-300">
-      <div class="flex items-center">
+    <li class="select-none mt-2 py-2 border-b border-amber-300 ${divColor}">
+      <div class="flex items-center ">
         <h3 id="h3task" class="mb-3 flex-1 text-xl font-bold ${colorTitle} uppercase">${title}</h3>
         <input type="checkbox" onclick="checktBox(${id}, ${!completed})" id="checkBoxComp" name="completed" ${status}  > 
         <label for="completed"> Completed </label>        
-        <div>          
+        <div>
           <span>${dueDate}</span>
           <button onclick="deleteTask(${id})" class="inline-block bg-amber-500 text-xs text-amber-900 border border-white px-3 py-1 rounded-md ml-2">Ta bort</button>
         </div>
@@ -128,7 +133,7 @@ function deleteTask(id) {
   });
 }
 
-
+//Tar in id och status, kallar på update i api och skickar in id och completed status.
 function checktBox(id, completed) {
   console.log('test checkbox' + id + completed)
 
